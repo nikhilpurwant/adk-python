@@ -16,11 +16,11 @@ import json
 import os
 import time
 from datetime import datetime, timedelta, timezone
-from flask import Flask, request, jsonify, redirect, session, render_template, url_for
+from flask import Flask, request, jsonify, redirect, session, render_template
 from flask_cors import CORS
 import jwt
 from dotenv import load_dotenv
-from urllib.parse import urlparse, urlunparse, parse_qs, urlencode
+from urllib.parse import urlparse, urlunparse, urlencode
 import hashlib
 import base64
 import logging
