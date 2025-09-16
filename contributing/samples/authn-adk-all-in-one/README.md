@@ -52,7 +52,7 @@ python3 -m venv .venv
 pip install -r requirements.txt
 
 ```
-3. configure and Start the IDP. Our IDP needs a private key to sign the tokens and a JWKS with public key component to verify them. Steps are provided for that (please check the screenshots below)
+3. Configure and Start the IDP. Our IDP needs a private key to sign the tokens and a JWKS with public key component to verify them. Steps are provided for that (please check the screenshots below)
 
 🪧 **NOTE:**
 It is recommended that you execute the key pair creation and public key extraction commands (1-3 and 5 below) on Google cloud shell.
