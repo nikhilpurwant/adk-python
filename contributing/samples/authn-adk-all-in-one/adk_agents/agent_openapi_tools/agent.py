@@ -37,9 +37,8 @@ try:
   with open(file_path, "r") as file:
     file_content = file.read()
 except FileNotFoundError:
-  logging.error(f"Error: The file '{file_path}' was not found.")
-except Exception as e:
-  logging.error(f"An error occurred: {e}")
+  # so that the execution does not continue when the file is not found.
+  raise FileNotFoundError(f"Error: The API Spec '{file_path}' was not found.")
 
 
 # Example with a JSON string

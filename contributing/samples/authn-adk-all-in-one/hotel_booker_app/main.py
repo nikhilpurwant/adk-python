@@ -114,12 +114,24 @@ def is_token_valid(token: str):
 
     public_key = jwt.algorithms.RSAAlgorithm.from_jwk(key)
 
+    # The decoding happens just so that we are able to
+    # check if there were any exception decoding the token
+    # which indicate it being not valid.
+    # Also you could have verify_aud and verify_iss as False
+    # But when they are true issuer and audience are needed in the jwt.decode call
+    # they are checked against the values from the token
+    # idealy token validation should also check whether the API being called is part of
+    # audience so for example localhost:8081/api should cover localhost:8081/api/hotels
+    # but should not cover localhost:8000/admin
+    # so this middleware (decorator - is_token_valid, can check the request url and do that check, but we are
+    # skipping that as the audience will always be localhost:8081)
     decoded_token = jwt.decode(
         token,
         key=public_key,
+        issuer="http://localhost:5000",
+        audience="http://localhost:8081",
         algorithms=[header["alg"]],
-        audience="your_client_id",  # Replace with your client ID
-        options={"verify_exp": True, "verify_aud": False, "verify_iss": False},
+        options={"verify_exp": True, "verify_aud": True, "verify_iss": True},
     )
     return True, "Token is valid."
   except jwt.ExpiredSignatureError:
@@ -160,7 +172,6 @@ def token_required(f):
 @app.route("/hotels", methods=["GET"])
 @token_required
 def get_hotels():
-  conn = get_db()
   location = request.args.get("location")
   hotels, error_message = hotel_booker.get_available_hotels(
       get_db().cursor(), location

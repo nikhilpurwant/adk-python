@@ -137,8 +137,18 @@ def generate_jwt(payload, key, alg="RS256"):
 def create_access_token(client_id, scopes, user_sub=None):
   if GENERATE_JWT:
     payload = {
-        "iss": "http://localhost:5000",
-        "aud": "http://localhost:5000/api",
+        "iss": "http://localhost:5000",  # who issued this token?
+        # aud - What client API is this token for? - please check comment in hotel booker is_token_valid
+        # ideally the reqeust's resource parameter (part of OAuth spec extension)
+        # Here is an example of such request inbound to this IDP
+        # GET http://localhost:5000/authorize?
+        #     response_type=code&
+        #     client_id=client123&
+        #     redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Fdev-ui&
+        #     scope=openid%20profile%20api%3Aread&
+        #     state=XYZ789&
+        #     resource=http%3A%2F%2Flocalhost%3A8081%2Fapi
+        "aud": "http://localhost:8081",
         "sub": user_sub if user_sub else client_id,
         "exp": (
             datetime.now(timezone.utc).timestamp()
@@ -328,9 +338,8 @@ def generate_token():
 
   grant_type = request.form.get("grant_type")
 
-  # print(f"Grant Type = {grant_type}")
-
-  # print(f"Request => {request.__dict__}")
+  # logging.debug(f"Grant Type = {grant_type}")
+  # logging.debug(f"Request => {request.__dict__}")
 
   client = CLIENT_REGISTRY.get(client_id)
 
