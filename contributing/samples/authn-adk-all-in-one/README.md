@@ -1,29 +1,34 @@
 ## ADK Authentication Demo (All in one - Agent, IDP and The app)
 
-This folder contains everything you need to run the ADK's `auth-code` grant type authentication demo completely locally
+This folder contains everything you need to run the ADK's `auth-code`
+ grant type authentication demo completely locally
 
 Here's the high level diagram.
 
 ![alt](doc_images/adk-auth-all-in-one.svg)
 
 ### Introduction
-More often than not the agents use some kind of system identity (especially for OpenAPI and MCP tools). But obviously this is insecure in that multiple end users are using the same identity with permissions to access ALL users' data on the backend.
+More often than not the agents use some kind of system identity
+ (especially for OpenAPI and MCP tools).
+ But obviously this is insecure in that multiple end users
+ are using the same identity with permissions to access ALL users' data on the
+ backend.
 
 ADK provides various [authentication mechanisms](https://google.github.io/adk-docs/tools/authentication/) to solve this.
 
-However to properly test it you need various components. We provide everything that is needed so that you can test and run ADK authentication demo locally. 
+However to properly test it you need various components.
+We provide everything that is needed so that you can test and run
+ ADK authentication demo locally.
 
-This folder comes with - 
+This folder comes with -
 
 1. An IDP
 2. A hotel booking application backend
 3. A hotel assistant ADK agent (accessing the application using OpenAPI Tools)
 
-
 ### Details
 
 You can read about the Auth Code grant / flow type in detail [here](https://developer.okta.com/blog/2018/04/10/oauth-authorization-code-grant-type). But for the purpose of this demo, following steps take place
-
 
 1. The user asks the agent to find hotels in "New York".
 2. Agent realizes (based on LLM response) that it needs to call a tool and that the tool needs authentication.
@@ -33,7 +38,6 @@ You can read about the Auth Code grant / flow type in detail [here](https://deve
 6. ADK then exchanges this auth_code for an access token.
 7. ADK does the API call to get details on hotels and hands over that response to LLM, LLM formats the response.
 8. ADK sends a response back to the User.
-
 
 ### Setting up and running
 
@@ -55,7 +59,8 @@ pip install -r requirements.txt
 3. Configure and Start the IDP. Our IDP needs a private key to sign the tokens and a JWKS with public key component to verify them. Steps are provided for that (please check the screenshots below)
 
 🪧 **NOTE:**
-It is recommended that you execute the key pair creation and public key extraction commands (1-3 and 5 below) on Google cloud shell.
+It is recommended that you execute the key pair creation and public
+ key extraction commands (1-3 and 5 below) on Google cloud shell.
 
 ```bash
 cd idp
@@ -85,14 +90,13 @@ python app.py
 <details>
 
 <summary><b>Screenshots</b></summary>
-Generating JWKS - 
+Generating JWKS -
 
 ![alt](doc_images/jwksgen.png)
 
 Updated `jwks.json` (notice the key is added in the existing array)
 
 ![alt](doc_images/jwks_updated.png)
-
 
 </details>
 
@@ -137,9 +141,12 @@ adk web
 
 🪧 **NOTE:**
 
-After first time authentication,  it might take some time for the agent to respond, subsequent responses are significantly faster.
+After first time authentication,
+it might take some time for the agent to respond,
+subsequent responses are significantly faster.
 
 ### Conclusion
 
-You can exercise the ADK Authentication without any external components using this demo.
+You can exercise the ADK Authentication
+without any external components using this demo.
 
